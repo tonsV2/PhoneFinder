@@ -1,8 +1,11 @@
 package dk.fitfit.phonefinder
 
 import android.Manifest.permission.*
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.provider.Telephony
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -13,6 +16,7 @@ import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     private val SMS_PERMISSION_CODE = 0
+    private lateinit var smsBroadcastReceiver: SmsBroadcastReceiver
 
     private fun showRequestPermissionsInfoAlertDialog() {
         showRequestPermissionsInfoAlertDialog(true)
@@ -70,5 +74,24 @@ class MainActivity : AppCompatActivity() {
         if(!isSmsPermissionGranted()) {
             showRequestPermissionsInfoAlertDialog()
         }
+
+        smsBroadcastReceiver = SmsBroadcastReceiver()
+        // TODO: Add else part of if statement
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            registerReceiver(smsBroadcastReceiver, IntentFilter(Telephony.Sms.Intents.SMS_RECEIVED_ACTION))
+        }
+        smsBroadcastReceiver.setListener(object : SmsBroadcastReceiver.Listener {
+            override fun onTextReceived(sender: String, message: String) {
+                // TODO: If white listed number and command found... execute command
+                Toast.makeText(this@MainActivity, sender + ": " + message, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+    }
+
+    override fun onStop() {
+        // TODO: Keep running in background... So don't start from from onCreate
+//        unregisterReceiver(smsBroadcastReceiver)
+        super.onStop()
     }
 }
