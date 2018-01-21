@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">PhoneFinder</string>
+    <string name="permission_alert_dialog_title">Permission request</string>
+    <string name="permission_dialog_message">This app need permission to receive and send text messages</string>
+    <string name="action_ok">Ok</string>
 </resources>
