@@ -13,6 +13,8 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     private var listener: Listener? = null
 
     override fun onReceive(context: Context, intent: Intent) {
+        Log.e(TAG, "SmsBroadcastReceiver.onReceive")
+
         if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {
             var sender = ""
             var message = ""
@@ -61,6 +63,6 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        private val TAG = "SmsBroadcastReceiver"
+        private val TAG = "MyTag"
     }
 }
